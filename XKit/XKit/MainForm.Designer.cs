@@ -37,10 +37,10 @@ namespace XKit
             this.miFileSplit1 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.miBuild = new System.Windows.Forms.ToolStripMenuItem();
             this.miEditCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.miEditCut = new System.Windows.Forms.ToolStripMenuItem();
             this.miEditPast = new System.Windows.Forms.ToolStripMenuItem();
+            this.miBuild = new System.Windows.Forms.ToolStripMenuItem();
             this.miBuildMicro = new System.Windows.Forms.ToolStripMenuItem();
             this.miBuildComplie = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
@@ -73,30 +73,30 @@ namespace XKit
             // miFileNew
             // 
             this.miFileNew.Name = "miFileNew";
-            this.miFileNew.Size = new System.Drawing.Size(180, 22);
+            this.miFileNew.Size = new System.Drawing.Size(108, 22);
             this.miFileNew.Text = "New";
             // 
             // miFileOpen
             // 
             this.miFileOpen.Name = "miFileOpen";
-            this.miFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.miFileOpen.Size = new System.Drawing.Size(108, 22);
             this.miFileOpen.Text = "Open";
             // 
             // miFileSave
             // 
             this.miFileSave.Name = "miFileSave";
-            this.miFileSave.Size = new System.Drawing.Size(180, 22);
+            this.miFileSave.Size = new System.Drawing.Size(108, 22);
             this.miFileSave.Text = "Save";
             // 
             // miFileSplit1
             // 
             this.miFileSplit1.Name = "miFileSplit1";
-            this.miFileSplit1.Size = new System.Drawing.Size(177, 6);
+            this.miFileSplit1.Size = new System.Drawing.Size(105, 6);
             // 
             // miFileExit
             // 
             this.miFileExit.Name = "miFileExit";
-            this.miFileExit.Size = new System.Drawing.Size(180, 22);
+            this.miFileExit.Size = new System.Drawing.Size(108, 22);
             this.miFileExit.Text = "Exit";
             this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
             // 
@@ -110,6 +110,24 @@ namespace XKit
             this.miEdit.Size = new System.Drawing.Size(42, 21);
             this.miEdit.Text = "Edit";
             // 
+            // miEditCopy
+            // 
+            this.miEditCopy.Name = "miEditCopy";
+            this.miEditCopy.Size = new System.Drawing.Size(106, 22);
+            this.miEditCopy.Text = "Copy";
+            // 
+            // miEditCut
+            // 
+            this.miEditCut.Name = "miEditCut";
+            this.miEditCut.Size = new System.Drawing.Size(106, 22);
+            this.miEditCut.Text = "Cut";
+            // 
+            // miEditPast
+            // 
+            this.miEditPast.Name = "miEditPast";
+            this.miEditPast.Size = new System.Drawing.Size(106, 22);
+            this.miEditPast.Text = "Past";
+            // 
             // miBuild
             // 
             this.miBuild.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -119,35 +137,17 @@ namespace XKit
             this.miBuild.Size = new System.Drawing.Size(49, 21);
             this.miBuild.Text = "Build";
             // 
-            // miEditCopy
-            // 
-            this.miEditCopy.Name = "miEditCopy";
-            this.miEditCopy.Size = new System.Drawing.Size(180, 22);
-            this.miEditCopy.Text = "Copy";
-            // 
-            // miEditCut
-            // 
-            this.miEditCut.Name = "miEditCut";
-            this.miEditCut.Size = new System.Drawing.Size(180, 22);
-            this.miEditCut.Text = "Cut";
-            // 
-            // miEditPast
-            // 
-            this.miEditPast.Name = "miEditPast";
-            this.miEditPast.Size = new System.Drawing.Size(180, 22);
-            this.miEditPast.Text = "Past";
-            // 
             // miBuildMicro
             // 
             this.miBuildMicro.Name = "miBuildMicro";
-            this.miBuildMicro.Size = new System.Drawing.Size(180, 22);
+            this.miBuildMicro.Size = new System.Drawing.Size(143, 22);
             this.miBuildMicro.Text = "Build Micro";
             this.miBuildMicro.Click += new System.EventHandler(this.miBuildMicro_Click);
             // 
             // miBuildComplie
             // 
             this.miBuildComplie.Name = "miBuildComplie";
-            this.miBuildComplie.Size = new System.Drawing.Size(180, 22);
+            this.miBuildComplie.Size = new System.Drawing.Size(143, 22);
             this.miBuildComplie.Text = "Compile";
             // 
             // MainForm
@@ -158,6 +158,7 @@ namespace XKit
             this.Controls.Add(this.msMain);
             this.MainMenuStrip = this.msMain;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "XCPU";
             this.msMain.ResumeLayout(false);
             this.msMain.PerformLayout();

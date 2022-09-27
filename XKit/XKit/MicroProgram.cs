@@ -56,8 +56,8 @@ namespace XKit
         public const int PIN_PC_CS = 1 << 14;
         public const int PIN_MAR_CS = 1 << 15;
         public const int PIN_MAR_W = 1 << 16;
-        public const int PIN_MC_W = 1 << 17;
-        public const int PIN_MC_CS = 1 << 18;
+        public const int PIN_MC_CS = 1 << 17;
+        public const int PIN_MC_W = 1 << 18;
         public const int PIN_HALT = 1 << 30;
 
         #endregion
