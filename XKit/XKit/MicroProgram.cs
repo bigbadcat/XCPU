@@ -108,6 +108,61 @@ namespace XKit
             MC_R | DST_W | PC_INC,
         };
 
+        #region 无操作数指令
+
+        /// <summary>
+        /// 无操作。
+        /// </summary>
+        public static int[] NoOperate = new int[]
+        {
+        };
+
+        /// <summary>
+        /// 停机。
+        /// </summary>
+        public static int[] Halt = new int[]
+        {
+            HALT,
+        };
+
+        #endregion
+
+        #region Move 01 10 11 - 00 01 10 11
+
+        /// <summary>
+        /// 数据转移。(REG <- INS)
+        /// </summary>
+        public static int[] Move0100 = new int[]
+        {
+
+        };
+
+        /// <summary>
+        /// 数据转移。(REG <- REG)
+        /// </summary>
+        public static int[] Move0101 = new int[]
+        {
+
+        };
+
+        /// <summary>
+        /// 数据转移。(REG <- MEM)
+        /// </summary>
+        public static int[] Move0110 = new int[]
+        {
+
+        };
+
+        /// <summary>
+        /// 数据转移。(REG <- REG_MEM)
+        /// </summary>
+        public static int[] Move0111 = new int[]
+        {
+
+        };
+
+        #endregion
+
         #endregion
 
 
@@ -117,46 +172,57 @@ namespace XKit
         /// <param name="file">保存微程序的二进制文件。</param>
         public static void Build(string file)
         {
-            int addr = MicroBuffer.Length >> 2;
-            for (int i=0; i< addr; ++i)
+            int addr = MicroBuffer.Length >> 6;
+            for (int instruct = 0; instruct < addr; ++instruct)
             {
-                int cyc = i & 0xF;      //后四位表示微指令周期
-                if (cyc < Fetch.Length)
+                //取指令
+                int cyc = 0;
+                int iaddr = instruct << 4;
+                for (; cyc < Fetch.Length; ++cyc)
                 {
-                    WriteUInt32(MicroBuffer, (uint)(i << 2), (uint)Fetch[cyc]);
-                    continue;
+                    WriteUInt32(MicroBuffer, (uint)((iaddr + cyc) << 2), (uint)Fetch[cyc]);
                 }
 
-                int instruct = i >> 2;
-                int mop = HALT;
-                cyc -= Fetch.Length;
+                //指令执行
+                int[] mp_data = null;
                 if ((instruct & 0x8000) != 0)
                 {
                     //双操作数
                     int src = instruct & 0x3;
                     int dst = (instruct >> 2) & 0x3;
-                    int cmd = (instruct >> 4) & 0x7F;
-                    mop = GetMicroInstruct2(cyc, cmd, dst, src);
+                    int cmd = instruct & 0xFF0;
+                    mp_data = GetMicroInstruct2(cmd, dst, src);
 
                 }
                 else if ((instruct & 0x4000) != 0)
                 {
                     //单操作数
-                    int psw = instruct & 0x7;
-                    int dst = (instruct >> 3) & 0x3;
-                    int cmd = (instruct >> 7) & 0x1F;
-                    mop = GetMicroInstruct1(cyc, cmd, dst, psw);
+                    int psw = instruct & 0xF;
+                    int dst = (instruct >> 4) & 0x3;
+                    int cmd = instruct & 0xFC0;
+                    mp_data = GetMicroInstruct1(cmd, dst, psw);
                 }
                 else
                 {
                     //无操作数
-                    int psw = instruct & 0x7;
-                    int cmd = (instruct >> 3) & 0x7F;
-                    mop = GetMicroInstruct0(cyc, cmd, psw);
+                    int psw = instruct & 0xF;
+                    int cmd = instruct & 0xFF0;
+                    mp_data = GetMicroInstruct0(cmd, psw);
                 }
-                WriteUInt32(MicroBuffer, (uint)(i << 2), (uint)mop);
-            }
+                if (mp_data != null)
+                {
+                    for (int i =0; i<mp_data.Length; ++i, ++cyc)
+                    {
+                        WriteUInt32(MicroBuffer, (uint)((iaddr + cyc) << 2), (uint)mp_data[i]);
+                    }
+                }
 
+                //指令结束
+                for (; cyc < 16; ++cyc)
+                {
+                    WriteUInt32(MicroBuffer, (uint)((iaddr + cyc) << 2), (uint)CYC_RS);
+                }
+            }
 
             File.WriteAllBytes(file, MicroBuffer);
             MessageBox.Show("Build micro program finished.");
@@ -165,39 +231,43 @@ namespace XKit
         /// <summary>
         /// 获取双操作数的指令。
         /// </summary>
-        /// <param name="cyc">微指令周期。</param>
         /// <param name="cmd"></param>
         /// <param name="dst"></param>
         /// <param name="src"></param>
         /// <returns></returns>
-        public static int GetMicroInstruct2(int cyc, int cmd, int dst, int src)
+        public static int[] GetMicroInstruct2(int cmd, int dst, int src)
         {
-            return HALT;
+            return null;
         }
 
         /// <summary>
         /// 获取单操作数的指令。
         /// </summary>
-        /// <param name="cyc">微指令周期。</param>
         /// <param name="cmd"></param>
         /// <param name="dst"></param>
         /// <param name="psw"></param>
         /// <returns></returns>
-        public static int GetMicroInstruct1(int cyc, int cmd, int dst, int psw)
+        public static int[] GetMicroInstruct1(int cmd, int dst, int psw)
         {
-            return HALT;
+            return null;
         }
 
         /// <summary>
         /// 获取无操作数的指令。
         /// </summary>
-        /// <param name="cyc">微指令周期。</param>
         /// <param name="cmd"></param>
         /// <param name="psw"></param>
         /// <returns></returns>
-        public static int GetMicroInstruct0(int cyc, int cmd, int psw)
+        public static int[] GetMicroInstruct0(int cmd, int psw)
         {
-            return HALT;
+            switch (cmd)
+            {
+                case Pin.AI_NOP:
+                    return NoOperate;
+                case Pin.AI_HLT:
+                    return Halt;
+            }
+            return null;
         }
 
         /// <summary>
