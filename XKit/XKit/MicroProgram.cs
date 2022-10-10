@@ -211,7 +211,7 @@ namespace XKit
                 }
                 if (mp_data != null)
                 {
-                    for (int i =0; i<mp_data.Length; ++i, ++cyc)
+                    for (int i = 0; i < mp_data.Length; ++i, ++cyc)
                     {
                         WriteUInt32(MicroBuffer, (uint)((iaddr + cyc) << 2), (uint)mp_data[i]);
                     }
@@ -223,7 +223,10 @@ namespace XKit
                     WriteUInt32(MicroBuffer, (uint)((iaddr + cyc) << 2), (uint)CYC_RS);
                 }
             }
-
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
             File.WriteAllBytes(file, MicroBuffer);
             MessageBox.Show("Build micro program finished.");
         }

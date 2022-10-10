@@ -140,15 +140,16 @@ namespace XKit
             // miBuildMicro
             // 
             this.miBuildMicro.Name = "miBuildMicro";
-            this.miBuildMicro.Size = new System.Drawing.Size(143, 22);
+            this.miBuildMicro.Size = new System.Drawing.Size(180, 22);
             this.miBuildMicro.Text = "Build Micro";
             this.miBuildMicro.Click += new System.EventHandler(this.miBuildMicro_Click);
             // 
             // miBuildComplie
             // 
             this.miBuildComplie.Name = "miBuildComplie";
-            this.miBuildComplie.Size = new System.Drawing.Size(143, 22);
+            this.miBuildComplie.Size = new System.Drawing.Size(180, 22);
             this.miBuildComplie.Text = "Compile";
+            this.miBuildComplie.Click += new System.EventHandler(this.miBuildComplie_Click);
             // 
             // MainForm
             // 

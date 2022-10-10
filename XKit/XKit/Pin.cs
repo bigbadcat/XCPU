@@ -42,41 +42,41 @@ namespace XKit
         public const int OP_ICMP = 0B1110;      //有符号比较
         public const int OP_PSET = 0B1111;      //状态字设置
 
-        public const int AM_INS = 0;                //立即寻址
-        public const int AM_REG = 1;                //寄存器寻址
-        public const int AM_MEM = 2;                //间接寻址
-        public const int AM_REG_MEM = 3;            //寄存器间接寻址
+        public const int AM_INS = 0;            //立即寻址
+        public const int AM_REG = 1;            //寄存器寻址
+        public const int AM_MEM = 2;            //间接寻址
+        public const int AM_REG_MEM = 3;        //寄存器间接寻址
 
-        public const int AI_NOP = 0B000000000000;   //无操作
-        public const int AI_HLT = 0B000000010000;   //停机
-        public const int AI_RET = 0B000000100000;   //函数返回
+        public const int AI_NOP = 0B000000000000;       //无操作
+        public const int AI_HLT = 0B000000010000;       //停机
+        public const int AI_RET = 0B000000100000;       //函数返回
 
-        public const int AI_JMP = 0B010000000000;   //无条件跳转
-        public const int AI_JG = 0B010001000000;    //大于跳转
-        public const int AI_JGE = 0B010010000000;   //大于等于跳转
-        public const int AI_JE = 0B010011000000;    //等于跳转
-        public const int AI_JNE = 0B010100000000;   //不等于跳转
-        public const int AI_JL = 0B010101000000;    //小于跳转
-        public const int AI_JLE = 0B010110000000;   //小于等于跳转
-        public const int AI_PUSH = 0B010111000000;  //数据入栈
-        public const int AI_POP = 0B011000000000;   //数据出栈
-        public const int AI_CALL = 0B011001000000;  //函数调用
+        public const int AI_JMP = 0B010000000000;       //无条件跳转
+        public const int AI_JG = 0B010001000000;        //大于跳转
+        public const int AI_JGE = 0B010010000000;       //大于等于跳转
+        public const int AI_JE = 0B010011000000;        //等于跳转
+        public const int AI_JNE = 0B010100000000;       //不等于跳转
+        public const int AI_JL = 0B010101000000;        //小于跳转
+        public const int AI_JLE = 0B010110000000;       //小于等于跳转
+        public const int AI_PUSH = 0B010111000000;      //数据入栈
+        public const int AI_POP = 0B011000000000;       //数据出栈
+        public const int AI_CALL = 0B011001000000;      //函数调用
 
-        public const int AI_MOV = 0B100000000000;   //数据移动
-        public const int AI_ADD = 0B100000100000;   //加法
-        public const int AI_SUB = 0B100001000000;   //减法
-        public const int AI_MUL = 0B100001100000;   //无符号乘法
-        public const int AI_IMUL = 0B100010000000;  //有符号乘法
-        public const int AI_DIV = 0B100010100000;   //无符号除法
-        public const int AI_IDIV = 0B100011000000;  //有符号除法
-        public const int AI_MOD = 0B100011100000;   //无符号取余
-        public const int AI_IMOD = 0B100100000000;  //有符号取余
-        public const int AI_AND = 0B100100100000;   //与
-        public const int AI_OR = 0B100101000000;    //或
-        public const int AI_NOT = 0B100101100000;   //非
-        public const int AI_XOR = 0B100110000000;   //异或
-        public const int AI_CMP = 0B100110100000;   //无符号比较
-        public const int AI_ICMP = 0B100111000000;  //有符号比较
-        public const int AI_PSET = 0B100111100000;  //状态字设置
+        public const int AI_MOV = 0B100000000000;       //数据移动
+        public const int AI_ADD = 0B100000010000;       //加法
+        public const int AI_SUB = 0B100000100000;       //减法
+        public const int AI_MUL = 0B100000110000;       //无符号乘法
+        public const int AI_IMUL = 0B100001000000;      //有符号乘法
+        public const int AI_DIV = 0B100001010000;       //无符号除法
+        public const int AI_IDIV = 0B100001100000;      //有符号除法
+        public const int AI_MOD = 0B100001110000;       //无符号取余
+        public const int AI_IMOD = 0B100010000000;      //有符号取余
+        public const int AI_AND = 0B100010010000;       //与
+        public const int AI_OR = 0B100010100000;        //或
+        public const int AI_NOT = 0B100010110000;       //非
+        public const int AI_XOR = 0B100011000000;       //异或
+        public const int AI_CMP = 0B100011010000;       //无符号比较
+        public const int AI_ICMP = 0B100011100000;      //有符号比较
+        public const int AI_PSET = 0B100011110000;      //状态字设置
     }
 }

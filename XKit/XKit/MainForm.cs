@@ -51,6 +51,22 @@ namespace XKit
             }
         }
 
+        private void miBuildComplie_Click(object sender, EventArgs e)
+        {
+            string src = @"C:\Users\XuXiang\Desktop\p.asm";
+            string dst = @"C:\Users\XuXiang\Desktop\a.bin";
+            string msg;
+            int err = Compiler.Complie(src, dst, out msg);
+            if (err == 0)
+            {
+                MessageBox.Show("Complie finished.");
+            }
+            else
+            {
+                MessageBox.Show(string.Format("error {0}\n{1}", err, msg));
+            }
+        }
+
         #endregion
     }
 }
