@@ -218,7 +218,7 @@ namespace XKit
             }
 
             //十六进制数字
-            if (vstr.StartsWith("0x"))
+            if (vstr.StartsWith("0X"))
             {
                 if (!int.TryParse(vstr.Substring(2), NumberStyles.HexNumber, null, out value))
                 {

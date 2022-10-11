@@ -37,6 +37,7 @@ namespace XKit
         public const int SP_R = Pin.REG_SP << SHIFT_REG_R;
         public const int MSR_R = Pin.REG_MSR << SHIFT_REG_R;
         public const int MAR_R = Pin.REG_MAR << SHIFT_REG_R;
+        public const int MDR_R = Pin.REG_MDR << SHIFT_REG_R;
         public const int SRC_R = Pin.REG_SRC << SHIFT_REG_R;
         public const int DST_R = Pin.REG_DST << SHIFT_REG_R;
         public const int IRL_R = Pin.REG_IRL << SHIFT_REG_R;
@@ -51,15 +52,16 @@ namespace XKit
         public const int SP_W = Pin.REG_SP << SHIFT_REG_W;
         public const int MSR_W = Pin.REG_MSR << SHIFT_REG_W;
         public const int MAR_W = Pin.REG_MAR << SHIFT_REG_W;
+        public const int MDR_W = Pin.REG_MDR << SHIFT_REG_W;
         public const int SRC_W = Pin.REG_SRC << SHIFT_REG_W;
         public const int DST_W = Pin.REG_DST << SHIFT_REG_W;
         public const int IRL_W = Pin.REG_IRL << SHIFT_REG_W;
         public const int IRH_W = Pin.REG_IRH << SHIFT_REG_W;
 
         public const int I_SRC_R = 1 << 10;         //指令源寄存器读
-        public const int I_SRC_W = 3 << 10;         //指令源寄存器写
+        public const int I_SRC_W = 1 << 11;         //指令源寄存器写
         public const int I_DST_R = 1 << 12;         //指令目标寄存器读
-        public const int I_DST_W = 3 << 12;         //指令目标寄存器写
+        public const int I_DST_W = 1 << 13;         //指令目标寄存器写
 
         public const int PC_R = 1 << 14;            //PC读
         public const int PC_W = 3 << 14;            //PC写
@@ -103,9 +105,9 @@ namespace XKit
             PC_R | MAR_W,
             MC_R | IRL_W | PC_INC,
             PC_R | MAR_W,
-            MC_R | SRC_W | PC_INC,
-            PC_R | MAR_W,
             MC_R | DST_W | PC_INC,
+            PC_R | MAR_W,
+            MC_R | SRC_W | PC_INC,
         };
 
         #region 无操作数指令
@@ -127,39 +129,43 @@ namespace XKit
 
         #endregion
 
-        #region Move 01 10 11 - 00 01 10 11
+        #region 单操作数指令
+
+        #endregion
+
+        #region 双操作数指令
 
         /// <summary>
-        /// 数据转移。(REG <- INS)
+        /// 数据转移微程序。
         /// </summary>
-        public static int[] Move0100 = new int[]
+        public static Dictionary<int, int[]> MoveMicro
         {
-
-        };
-
-        /// <summary>
-        /// 数据转移。(REG <- REG)
-        /// </summary>
-        public static int[] Move0101 = new int[]
-        {
-
-        };
-
-        /// <summary>
-        /// 数据转移。(REG <- MEM)
-        /// </summary>
-        public static int[] Move0110 = new int[]
-        {
-
-        };
-
-        /// <summary>
-        /// 数据转移。(REG <- REG_MEM)
-        /// </summary>
-        public static int[] Move0111 = new int[]
-        {
-
-        };
+            get
+            {
+                Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
+                micro.Add((Pin.AM_REG << 2) | Pin.AM_INS, new int[]
+                {
+                    I_DST_W | SRC_R,
+                });
+                micro.Add((Pin.AM_REG << 2) | Pin.AM_REG, new int[]
+                {
+                    I_DST_W | I_SRC_R,
+                });
+                micro.Add((Pin.AM_REG << 2) | Pin.AM_MEM, new int[]
+                {
+                    DS_R | MSR_W,
+                    MAR_W | SRC_R,
+                    I_DST_W | MC_R,
+                });
+                micro.Add((Pin.AM_REG << 2) | Pin.AM_REG_MEM, new int[]
+                {
+                    DS_R | MSR_W,
+                    MAR_W | I_SRC_R,
+                    I_DST_W | MC_R,
+                });
+                return micro;
+            }
+        }
 
         #endregion
 
@@ -172,7 +178,8 @@ namespace XKit
         /// <param name="file">保存微程序的二进制文件。</param>
         public static void Build(string file)
         {
-            int addr = MicroBuffer.Length >> 6;
+            //int addr = MicroBuffer.Length >> 6;
+            int addr = 1 << 12;
             for (int instruct = 0; instruct < addr; ++instruct)
             {
                 //取指令
@@ -185,16 +192,15 @@ namespace XKit
 
                 //指令执行
                 int[] mp_data = null;
-                if ((instruct & 0x8000) != 0)
+                if ((instruct & 0x800) != 0)
                 {
                     //双操作数
                     int src = instruct & 0x3;
                     int dst = (instruct >> 2) & 0x3;
                     int cmd = instruct & 0xFF0;
                     mp_data = GetMicroInstruct2(cmd, dst, src);
-
                 }
-                else if ((instruct & 0x4000) != 0)
+                else if ((instruct & 0x400) != 0)
                 {
                     //单操作数
                     int psw = instruct & 0xF;
@@ -240,8 +246,22 @@ namespace XKit
         /// <returns></returns>
         public static int[] GetMicroInstruct2(int cmd, int dst, int src)
         {
+            if (s_TwoOperandMicro == null)
+            {
+                s_TwoOperandMicro = new Dictionary<int, Dictionary<int, int[]>>();
+                s_TwoOperandMicro.Add(Pin.AI_MOV, MoveMicro);
+            }
+
+            Dictionary<int, int[]> cmdop;
+            if (s_TwoOperandMicro.TryGetValue(cmd, out cmdop))
+            {
+                int[] micro;
+                cmdop.TryGetValue(dst << 2 | src, out micro);
+                return micro;
+            }
             return null;
         }
+        private static Dictionary<int, Dictionary<int, int[]>> s_TwoOperandMicro = null;
 
         /// <summary>
         /// 获取单操作数的指令。
@@ -263,15 +283,18 @@ namespace XKit
         /// <returns></returns>
         public static int[] GetMicroInstruct0(int cmd, int psw)
         {
-            switch (cmd)
+            if (s_NoOperandMicro == null)
             {
-                case Pin.AI_NOP:
-                    return NoOperate;
-                case Pin.AI_HLT:
-                    return Halt;
+                s_NoOperandMicro = new Dictionary<int, int[]>();
+                s_NoOperandMicro.Add(Pin.AI_NOP, NoOperate);
+                s_NoOperandMicro.Add(Pin.AI_HLT, Halt);
             }
-            return null;
+
+            int[] micro;
+            s_NoOperandMicro.TryGetValue(cmd, out micro);
+            return micro;
         }
+        private static Dictionary<int, int[]> s_NoOperandMicro = null;
 
         /// <summary>
         /// 写入一个无符号整数。

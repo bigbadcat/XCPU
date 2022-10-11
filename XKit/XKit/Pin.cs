@@ -21,10 +21,11 @@ namespace XKit
         public const int REG_SP = 0B01000;      //堆栈指针
         public const int REG_MSR = 0B01001;     //内存段寄存器
         public const int REG_MAR = 0B01010;     //内存地址寄存器
-        public const int REG_SRC = 0B01011;     //源操作数寄存器
-        public const int REG_DST = 0B01100;     //目的操作数寄存器
-        public const int REG_IRL = 0B01101;     //指令寄存器低8位
-        public const int REG_IRH = 0B01110;     //指令寄存器高8位
+        public const int REG_MDR = 0B01011;     //内存数据寄存器
+        public const int REG_SRC = 0B01100;     //源操作数寄存器
+        public const int REG_DST = 0B01101;     //目的操作数寄存器
+        public const int REG_IRL = 0B01110;     //指令寄存器低8位
+        public const int REG_IRH = 0B01111;     //指令寄存器高8位
 
         public const int OP_ADD = 0B0001;       //加法
         public const int OP_SUB = 0B0010;       //减法
