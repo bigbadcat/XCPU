@@ -42,18 +42,22 @@ namespace XKit
 
         private void miBuildMicro_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "Bin|*.bin|Bytes|*.bytes|All|*.*";
-            var res = dlg.ShowDialog();
-            if (res == DialogResult.OK)
-            {
-                MicroProgram.Build(dlg.FileName);
-            }
+            //SaveFileDialog dlg = new SaveFileDialog();
+            //dlg.Filter = "Bin|*.bin|Bytes|*.bytes|All|*.*";
+            //var res = dlg.ShowDialog();
+            //if (res == DialogResult.OK)
+            //{
+            //    MicroProgram.Build(dlg.FileName);
+            //    MessageBox.Show("Build micro program finished.");
+            //}
+            string bin = @"C:\Users\XuXiang\Desktop\m.bin";
+            MicroProgram.Build(bin);
+            MessageBox.Show("Build micro program finished.");
         }
 
         private void miBuildComplie_Click(object sender, EventArgs e)
         {
-            string src = @"C:\Users\XuXiang\Desktop\p.asm";
+            string src = @"E:\GitHub\XCPU\Test.asm";
             string dst = @"C:\Users\XuXiang\Desktop\a.bin";
             string msg;
             int err = Compiler.Complie(src, dst, out msg);

@@ -58,10 +58,10 @@ namespace XKit
         public const int IRL_W = Pin.REG_IRL << SHIFT_REG_W;
         public const int IRH_W = Pin.REG_IRH << SHIFT_REG_W;
 
-        public const int I_SRC_R = 1 << 10;         //指令源寄存器读
-        public const int I_SRC_W = 1 << 11;         //指令源寄存器写
-        public const int I_DST_R = 1 << 12;         //指令目标寄存器读
-        public const int I_DST_W = 1 << 13;         //指令目标寄存器写
+        public const int S_REG_R = 1 << 10;         //源指定的寄存器读
+        public const int S_REG_W = 1 << 11;         //源指定的寄存器写
+        public const int D_REG_R = 1 << 12;         //目标指定的寄存器读
+        public const int D_REG_W = 1 << 13;         //目标指定的寄存器写
 
         public const int PC_R = 1 << 14;            //PC读
         public const int PC_W = 3 << 14;            //PC写
@@ -145,24 +145,83 @@ namespace XKit
                 Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
                 micro.Add((Pin.AM_REG << 2) | Pin.AM_INS, new int[]
                 {
-                    I_DST_W | SRC_R,
+                    D_REG_W | SRC_R,
                 });
                 micro.Add((Pin.AM_REG << 2) | Pin.AM_REG, new int[]
                 {
-                    I_DST_W | I_SRC_R,
+                    D_REG_W | S_REG_R,
                 });
                 micro.Add((Pin.AM_REG << 2) | Pin.AM_MEM, new int[]
                 {
-                    DS_R | MSR_W,
+                    MSR_W | DS_R,
                     MAR_W | SRC_R,
-                    I_DST_W | MC_R,
+                    D_REG_W | MC_R,
                 });
                 micro.Add((Pin.AM_REG << 2) | Pin.AM_REG_MEM, new int[]
                 {
-                    DS_R | MSR_W,
-                    MAR_W | I_SRC_R,
-                    I_DST_W | MC_R,
+                    MSR_W | DS_R,
+                    MAR_W | S_REG_R,
+                    D_REG_W | MC_R,
                 });
+
+                micro.Add((Pin.AM_MEM << 2) | Pin.AM_INS, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | DST_R,
+                    MC_W | SRC_R,
+                });
+                micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | DST_R,
+                    MC_W | S_REG_R,
+                });
+                micro.Add((Pin.AM_MEM << 2) | Pin.AM_MEM, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | SRC_R,
+                    MDR_W | MC_R,
+                    MAR_W | DST_R,
+                    MC_W | MDR_R,
+                });
+                micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG_MEM, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | S_REG_R,
+                    MDR_W | MC_R,
+                    MAR_W | DST_R,
+                    MC_W | MDR_R,
+                });
+
+                micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_INS, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | D_REG_R,
+                    MC_W | SRC_R,
+                });
+                micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | D_REG_R,
+                    MC_W | S_REG_R,
+                });
+                micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_MEM, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | SRC_R,
+                    MDR_W | MC_R,
+                    MAR_W | D_REG_R,
+                    MC_W | MDR_R,
+                });
+                micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG_MEM, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | S_REG_R,
+                    MDR_W | MC_R,
+                    MAR_W | D_REG_R,
+                    MC_W | MDR_R,
+                });
+
                 return micro;
             }
         }
@@ -233,8 +292,7 @@ namespace XKit
             {
                 File.Delete(file);
             }
-            File.WriteAllBytes(file, MicroBuffer);
-            MessageBox.Show("Build micro program finished.");
+            File.WriteAllBytes(file, MicroBuffer);            
         }
 
         /// <summary>
