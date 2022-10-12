@@ -226,6 +226,104 @@ namespace XKit
             }
         }
 
+        /// <summary>
+        /// 获取运算微指令。
+        /// </summary>
+        /// <param name="op">运算码。</param>
+        /// <returns>运算微指令。</returns>
+        public static Dictionary<int, int[]> GetOPMicro(int op)
+        {
+            Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_INS, new int[]
+            {
+                    B_W | SRC_R,
+                    D_REG_W | op,
+            });
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_REG, new int[]
+            {
+                    B_W | S_REG_R,
+                    D_REG_W | op,
+            });
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_MEM, new int[]
+            {
+                    MSR_W | DS_R,
+                    MAR_W | SRC_R,
+                    B_W | MC_R,
+                    D_REG_W | op,
+            });
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                    MSR_W | DS_R,
+                    MAR_W | S_REG_R,
+                    B_W | MC_R,
+                    D_REG_W | op,
+            });
+
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_INS, new int[]
+            {
+                    B_W | SRC_R,
+                    MSR_W | DS_R,
+                    MAR_W | DST_R,
+                    MC_W | op,
+            });
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG, new int[]
+            {
+                    B_W | S_REG_R,
+                    MSR_W | DS_R,
+                    MAR_W | DST_R,
+                    MC_W | op,
+            });
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_MEM, new int[]
+            {
+                    MSR_W | DS_R,
+                    MAR_W | SRC_R,
+                    B_W | MC_R,
+                    MAR_W | DST_R,
+                    MC_W | op,
+            });
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                    MSR_W | DS_R,
+                    MAR_W | S_REG_R,
+                    B_W | MC_R,
+                    MAR_W | DST_R,
+                    MC_W | op,
+            });
+
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_INS, new int[]
+            {
+                    B_W | SRC_R,
+                    MSR_W | DS_R,
+                    MAR_W | D_REG_R,
+                    MC_W | op,
+            });
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG, new int[]
+            {
+                    B_W | S_REG_R,
+                    MSR_W | DS_R,
+                    MAR_W | D_REG_R,
+                    MC_W | op,
+            });
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_MEM, new int[]
+            {
+                    MSR_W | DS_R,
+                    MAR_W | SRC_R,
+                    B_W | MC_R,
+                    MAR_W | D_REG_R,
+                    MC_W | op,
+            });
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                    MSR_W | DS_R,
+                    MAR_W | S_REG_R,
+                    B_W | MC_R,
+                    MAR_W | D_REG_R,
+                    MC_W | op,
+            });
+
+            return micro;
+        }
+
         #endregion
 
         #endregion
@@ -308,6 +406,18 @@ namespace XKit
             {
                 s_TwoOperandMicro = new Dictionary<int, Dictionary<int, int[]>>();
                 s_TwoOperandMicro.Add(Pin.AI_MOV, MoveMicro);
+                s_TwoOperandMicro.Add(Pin.AI_ADD, GetOPMicro(OP_ADD));
+                s_TwoOperandMicro.Add(Pin.AI_SUB, GetOPMicro(OP_SUB));
+                s_TwoOperandMicro.Add(Pin.AI_MUL, GetOPMicro(OP_MUL));
+                s_TwoOperandMicro.Add(Pin.AI_IMUL, GetOPMicro(OP_IMUL));
+                s_TwoOperandMicro.Add(Pin.AI_DIV, GetOPMicro(OP_DIV));
+                s_TwoOperandMicro.Add(Pin.AI_IDIV, GetOPMicro(OP_IDIV));
+                s_TwoOperandMicro.Add(Pin.AI_MOD, GetOPMicro(OP_MOD));
+                s_TwoOperandMicro.Add(Pin.AI_IMOD, GetOPMicro(OP_IMOD));
+                s_TwoOperandMicro.Add(Pin.AI_AND, GetOPMicro(OP_AND));
+                s_TwoOperandMicro.Add(Pin.AI_OR, GetOPMicro(OP_OR));
+                s_TwoOperandMicro.Add(Pin.AI_NOT, GetOPMicro(OP_NOT));
+                s_TwoOperandMicro.Add(Pin.AI_XOR, GetOPMicro(OP_XOR));
             }
 
             Dictionary<int, int[]> cmdop;
