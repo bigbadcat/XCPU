@@ -236,89 +236,228 @@ namespace XKit
             Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
             micro.Add((Pin.AM_REG << 2) | Pin.AM_INS, new int[]
             {
-                    B_W | SRC_R,
-                    D_REG_W | op,
+                B_W | SRC_R,
+                D_REG_W | op,
             });
             micro.Add((Pin.AM_REG << 2) | Pin.AM_REG, new int[]
             {
-                    B_W | S_REG_R,
-                    D_REG_W | op,
+                B_W | S_REG_R,
+                D_REG_W | op,
             });
             micro.Add((Pin.AM_REG << 2) | Pin.AM_MEM, new int[]
             {
-                    MSR_W | DS_R,
-                    MAR_W | SRC_R,
-                    B_W | MC_R,
-                    D_REG_W | op,
+                MSR_W | DS_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                D_REG_W | op,
             });
             micro.Add((Pin.AM_REG << 2) | Pin.AM_REG_MEM, new int[]
             {
-                    MSR_W | DS_R,
-                    MAR_W | S_REG_R,
-                    B_W | MC_R,
-                    D_REG_W | op,
+                MSR_W | DS_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                D_REG_W | op,
             });
 
             micro.Add((Pin.AM_MEM << 2) | Pin.AM_INS, new int[]
             {
-                    B_W | SRC_R,
-                    MSR_W | DS_R,
-                    MAR_W | DST_R,
-                    MC_W | op,
+                B_W | SRC_R,
+                MSR_W | DS_R,
+                MAR_W | DST_R,
+                MC_W | op,
             });
             micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG, new int[]
             {
-                    B_W | S_REG_R,
-                    MSR_W | DS_R,
-                    MAR_W | DST_R,
-                    MC_W | op,
+                B_W | S_REG_R,
+                MSR_W | DS_R,
+                MAR_W | DST_R,
+                MC_W | op,
             });
             micro.Add((Pin.AM_MEM << 2) | Pin.AM_MEM, new int[]
             {
-                    MSR_W | DS_R,
-                    MAR_W | SRC_R,
-                    B_W | MC_R,
-                    MAR_W | DST_R,
-                    MC_W | op,
+                MSR_W | DS_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                MAR_W | DST_R,
+                MC_W | op,
             });
             micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG_MEM, new int[]
             {
-                    MSR_W | DS_R,
-                    MAR_W | S_REG_R,
-                    B_W | MC_R,
-                    MAR_W | DST_R,
-                    MC_W | op,
+                MSR_W | DS_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                MAR_W | DST_R,
+                MC_W | op,
             });
 
             micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_INS, new int[]
             {
-                    B_W | SRC_R,
-                    MSR_W | DS_R,
-                    MAR_W | D_REG_R,
-                    MC_W | op,
+                B_W | SRC_R,
+                MSR_W | DS_R,
+                MAR_W | D_REG_R,
+                MC_W | op,
             });
             micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG, new int[]
             {
-                    B_W | S_REG_R,
-                    MSR_W | DS_R,
-                    MAR_W | D_REG_R,
-                    MC_W | op,
+                B_W | S_REG_R,
+                MSR_W | DS_R,
+                MAR_W | D_REG_R,
+                MC_W | op,
             });
             micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_MEM, new int[]
             {
-                    MSR_W | DS_R,
-                    MAR_W | SRC_R,
-                    B_W | MC_R,
-                    MAR_W | D_REG_R,
-                    MC_W | op,
+                MSR_W | DS_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                MAR_W | D_REG_R,
+                MC_W | op,
             });
             micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG_MEM, new int[]
             {
-                    MSR_W | DS_R,
-                    MAR_W | S_REG_R,
-                    B_W | MC_R,
-                    MAR_W | D_REG_R,
-                    MC_W | op,
+                MSR_W | DS_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                MAR_W | D_REG_R,
+                MC_W | op,
+            });
+
+            return micro;
+        }
+
+        /// <summary>
+        /// 获取无结果运算微指令。
+        /// </summary>
+        /// <param name="op">运算码。</param>
+        /// <returns>无结果运算微指令。</returns>
+        public static Dictionary<int, int[]> GetNROPMicro(int op)
+        {
+            Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
+            micro.Add((Pin.AM_INS << 2) | Pin.AM_INS, new int[]
+            {
+                A_W | DST_R,
+                B_W | SRC_R,
+                op,
+            });
+            micro.Add((Pin.AM_INS << 2) | Pin.AM_REG, new int[]
+            {
+                A_W | DST_R,
+                B_W | S_REG_R,
+                op,
+            });
+            micro.Add((Pin.AM_INS << 2) | Pin.AM_MEM, new int[]
+            {
+                A_W | DST_R,
+                MSR_W | DS_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                op,
+            });
+            micro.Add((Pin.AM_INS << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                A_W | DST_R,
+                MSR_W | DS_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                op,
+            });
+
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_INS, new int[]
+            {
+                A_W | D_REG_R,
+                B_W | SRC_R,
+                op,
+            });
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_REG, new int[]
+            {
+                A_W | D_REG_R,
+                B_W | S_REG_R,
+                op,
+            });
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_MEM, new int[]
+            {
+                A_W | D_REG_R,
+                MSR_W | DS_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                op,
+            });
+            micro.Add((Pin.AM_REG << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                A_W | D_REG_R,
+                MSR_W | DS_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                op,
+            });
+
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_INS, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | DST_R,
+                A_W | MC_R,
+                B_W | SRC_R,
+                op,
+            });
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | DST_R,
+                A_W | MC_R,
+                B_W | S_REG_R,
+                op,
+            });
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_MEM, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | DST_R,
+                A_W | MC_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                op,
+            });
+            micro.Add((Pin.AM_MEM << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | DST_R,
+                A_W | MC_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                op,
+            });
+
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_INS, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | D_REG_R,
+                A_W | MC_R,
+                B_W | SRC_R,
+                op,
+            });
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | D_REG_R,
+                A_W | MC_R,
+                B_W | S_REG_R,
+                op,
+            });
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_MEM, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | D_REG_R,
+                A_W | MC_R,
+                MAR_W | SRC_R,
+                B_W | MC_R,
+                op,
+            });
+            micro.Add((Pin.AM_REG_MEM << 2) | Pin.AM_REG_MEM, new int[]
+            {
+                MSR_W | DS_R,
+                MAR_W | D_REG_R,
+                A_W | MC_R,
+                MAR_W | S_REG_R,
+                B_W | MC_R,
+                op,
             });
 
             return micro;
@@ -418,6 +557,9 @@ namespace XKit
                 s_TwoOperandMicro.Add(Pin.AI_OR, GetOPMicro(OP_OR));
                 s_TwoOperandMicro.Add(Pin.AI_NOT, GetOPMicro(OP_NOT));
                 s_TwoOperandMicro.Add(Pin.AI_XOR, GetOPMicro(OP_XOR));
+                s_TwoOperandMicro.Add(Pin.AI_CMP, GetNROPMicro(OP_CMP));
+                s_TwoOperandMicro.Add(Pin.AI_ICMP, GetNROPMicro(OP_ICMP));
+                s_TwoOperandMicro.Add(Pin.AI_PSET, GetNROPMicro(OP_PSET));
             }
 
             Dictionary<int, int[]> cmdop;

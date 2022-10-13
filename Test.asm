@@ -42,4 +42,61 @@
 ;ADD [D], [0x4]
 ;ADD [D], [C]
 
+;---ICMP---
+;MOV C, 1
+;ICMP -2, -1
+;ICMP -5, C
+;ICMP 3, [0x2]
+;ICMP 5, [C]
+
+;MOV C, 5
+;MOV D, 5
+;ICMP D, -1
+;ICMP D, C
+;ICMP D, [0x2]
+;ICMP D, [C]
+
+;MOV C, 5
+;MOV D, 2
+;ICMP [0x1], 9
+;ICMP [0x1], C
+;ICMP [0x1], [0x2]
+;ICMP [0x1], [C]
+
+;MOV C, 5
+;MOV D, 1
+;ICMP [D], 9
+;ICMP [D], C
+;ICMP [D], [0x2]
+;ICMP [D], [C]
+
 HLT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
