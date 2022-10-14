@@ -618,23 +618,44 @@ namespace XKit
             {
                 s_SingleOperandMicro = new Dictionary<int, Dictionary<int, int[]>>();
                 s_SingleOperandMicro.Add(Pin.AI_JMP, JumpMicro);
-
-
-
-                //public const int AI_JMP = 0B010000000000;       //无条件跳转
-                //public const int AI_JG = 0B010001000000;        //大于跳转
-                //public const int AI_JGE = 0B010010000000;       //大于等于跳转
-                //public const int AI_JE = 0B010011000000;        //等于跳转
-                //public const int AI_JNE = 0B010100000000;       //不等于跳转
-                //public const int AI_JL = 0B010101000000;        //小于跳转
-                //public const int AI_JLE = 0B010110000000;       //小于等于跳转
+                s_SingleOperandMicro.Add(Pin.AI_JG, JumpMicro);
+                s_SingleOperandMicro.Add(Pin.AI_JGE, JumpMicro);
+                s_SingleOperandMicro.Add(Pin.AI_JE, JumpMicro);
+                s_SingleOperandMicro.Add(Pin.AI_JNE, JumpMicro);
+                s_SingleOperandMicro.Add(Pin.AI_JL, JumpMicro);
+                s_SingleOperandMicro.Add(Pin.AI_JLE, JumpMicro);
             }
 
             Dictionary<int, int[]> cmdop;
             if (s_SingleOperandMicro.TryGetValue(cmd, out cmdop))
             {
+                int cmp = psw & 0x3;
+                bool greater = cmp == 0;
+                bool equal = cmp == 1;
+                bool less = cmp == 2;
                 int[] micro;
                 cmdop.TryGetValue(dst, out micro);
+                switch (cmd)
+                {
+                    case Pin.AI_JG:
+                        micro = greater ? micro : null;
+                        break;
+                    case Pin.AI_JGE:
+                        micro = greater || equal ? micro : null;
+                        break;
+                    case Pin.AI_JE:
+                        micro = equal ? micro : null;
+                        break;
+                    case Pin.AI_JNE:
+                        micro = !equal ? micro : null;
+                        break;
+                    case Pin.AI_JL:
+                        micro = less ? micro : null;
+                        break;
+                    case Pin.AI_JLE:
+                        micro = less || equal ? micro : null;
+                        break;
+                }
                 return micro;
             }
             return null;

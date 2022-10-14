@@ -81,6 +81,36 @@
 ;LB1:
 ;MOV C, 30
 
+;---JMP-C---
+;CMP 1, 2
+;JG LB1
+;JGE LB1
+;JE LB1
+;JNE LB1
+;JL LB1
+;JLE LB1
+;MOV [0x40], 1
+;LB1:
+;CMP 2, 2
+;JG LB2
+;JGE LB2
+;JE LB2
+;JNE LB2
+;JL LB2
+;JLE LB2
+;MOV [0x41], 1
+;LB2:
+;CMP 3, 2
+;JG LB3
+;JGE LB3
+;JE LB3
+;JNE LB3
+;JL LB3
+;JLE LB3
+;MOV [0x42], 1
+;LB3:
+
+
 HLT
 
 
