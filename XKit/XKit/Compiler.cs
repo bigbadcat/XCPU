@@ -408,7 +408,7 @@ namespace XKit
             }
             catch (CompileException ce)
             {
-                msg = ce.Message;
+                msg = string.Format("{0}:{1}", ce.Line+1, ce.Message);
                 return ce.ErrorCode;
             }
             catch (Exception e)

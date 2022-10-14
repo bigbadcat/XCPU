@@ -70,6 +70,17 @@
 ;ICMP [D], [0x2]
 ;ICMP [D], [C]
 
+;---JMP---
+;MOV A, LB1
+;JMP LB1
+;JMP A
+;JMP [0x3]
+;MOV D, 0x3
+;JMP [D]
+;MOV B, 20
+;LB1:
+;MOV C, 30
+
 HLT
 
 

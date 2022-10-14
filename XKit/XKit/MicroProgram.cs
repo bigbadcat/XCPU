@@ -131,6 +131,38 @@ namespace XKit
 
         #region 单操作数指令
 
+        /// <summary>
+        /// 跳转微程序。
+        /// </summary>
+        public static Dictionary<int, int[]> JumpMicro
+        {
+            get
+            {
+                Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
+                micro.Add(Pin.AM_INS, new int[]
+                {
+                    PC_W | DST_R,
+                });
+                micro.Add(Pin.AM_REG, new int[]
+                {
+                    PC_W | D_REG_R,
+                });
+                micro.Add(Pin.AM_MEM, new int[]
+                {
+                    MSR_W | CS_R,
+                    MAR_W | DST_R,
+                    PC_W | MC_R,
+                });
+                micro.Add(Pin.AM_REG_MEM, new int[]
+                {
+                    MSR_W | CS_R,
+                    MAR_W | D_REG_R,
+                    PC_W | MC_R,
+                });
+                return micro;
+            }
+        }
+
         #endregion
 
         #region 双操作数指令
@@ -582,8 +614,32 @@ namespace XKit
         /// <returns></returns>
         public static int[] GetMicroInstruct1(int cmd, int dst, int psw)
         {
+            if (s_SingleOperandMicro == null)
+            {
+                s_SingleOperandMicro = new Dictionary<int, Dictionary<int, int[]>>();
+                s_SingleOperandMicro.Add(Pin.AI_JMP, JumpMicro);
+
+
+
+                //public const int AI_JMP = 0B010000000000;       //无条件跳转
+                //public const int AI_JG = 0B010001000000;        //大于跳转
+                //public const int AI_JGE = 0B010010000000;       //大于等于跳转
+                //public const int AI_JE = 0B010011000000;        //等于跳转
+                //public const int AI_JNE = 0B010100000000;       //不等于跳转
+                //public const int AI_JL = 0B010101000000;        //小于跳转
+                //public const int AI_JLE = 0B010110000000;       //小于等于跳转
+            }
+
+            Dictionary<int, int[]> cmdop;
+            if (s_SingleOperandMicro.TryGetValue(cmd, out cmdop))
+            {
+                int[] micro;
+                cmdop.TryGetValue(dst, out micro);
+                return micro;
+            }
             return null;
         }
+        private static Dictionary<int, Dictionary<int, int[]>> s_SingleOperandMicro = null;
 
         /// <summary>
         /// 获取无操作数的指令。
