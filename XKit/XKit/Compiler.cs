@@ -58,6 +58,7 @@ namespace XKit
                 m_NameToCommand.Add("JLE", Pin.AI_JLE);
                 m_NameToCommand.Add("PUSH", Pin.AI_PUSH);
                 m_NameToCommand.Add("POP", Pin.AI_POP);
+                m_NameToCommand.Add("WL", Pin.AI_WL);
                 m_NameToCommand.Add("CALL", Pin.AI_CALL);
 
                 m_NameToCommand.Add("MOV", Pin.AI_MOV);

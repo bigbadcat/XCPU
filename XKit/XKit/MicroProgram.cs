@@ -86,6 +86,7 @@ namespace XKit
 
         public const int MC_R = 1 << 21;            //内存读
         public const int MC_W = 3 << 21;            //内存写
+        public const int WL = 1 << 23;              //字长读取
 
         public const int CYC_RS = 1 << 29;          //重置微指令周期
         public const int HALT = 1 << 30;            //停止
@@ -158,6 +159,34 @@ namespace XKit
                     MSR_W | CS_R,
                     MAR_W | D_REG_R,
                     PC_W | MC_R,
+                });
+                return micro;
+            }
+        }
+
+        /// <summary>
+        /// 字长微程序。
+        /// </summary>
+        public static Dictionary<int, int[]> WordLenMicro
+        {
+            get
+            {
+                Dictionary<int, int[]> micro = new Dictionary<int, int[]>();
+                micro.Add(Pin.AM_REG, new int[]
+                {
+                    D_REG_W | WL,
+                });
+                micro.Add(Pin.AM_MEM, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | DST_R,
+                    MC_W | WL,
+                });
+                micro.Add(Pin.AM_REG_MEM, new int[]
+                {
+                    MSR_W | DS_R,
+                    MAR_W | D_REG_R,
+                    MC_W | WL,
                 });
                 return micro;
             }
@@ -624,6 +653,7 @@ namespace XKit
                 s_SingleOperandMicro.Add(Pin.AI_JNE, JumpMicro);
                 s_SingleOperandMicro.Add(Pin.AI_JL, JumpMicro);
                 s_SingleOperandMicro.Add(Pin.AI_JLE, JumpMicro);
+                s_SingleOperandMicro.Add(Pin.AI_WL, WordLenMicro);
             }
 
             Dictionary<int, int[]> cmdop;

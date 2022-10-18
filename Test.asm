@@ -110,6 +110,11 @@
 ;MOV [0x42], 1
 ;LB3:
 
+;---WL---
+;MOV A, 0x41
+;WL B
+;WL [0x40]
+;WL [A]
 
 HLT
 

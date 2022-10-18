@@ -61,6 +61,7 @@ namespace XKit
         public const int AI_JLE = 0B010110000000;       //小于等于跳转
         public const int AI_PUSH = 0B010111000000;      //数据入栈
         public const int AI_POP = 0B011000000000;       //数据出栈
+        public const int AI_WL = 0B011001000000;        //字长获取
         public const int AI_CALL = 0B011001000000;      //函数调用
 
         public const int AI_MOV = 0B100000000000;       //数据移动
